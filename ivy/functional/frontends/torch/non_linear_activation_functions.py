@@ -129,3 +129,16 @@ def celu(input, alpha=1.0, inplace=False):
 
 def selu(input, inplace=False):
     return _selu_with_inplace(input, inplace=inplace)
+
+
+def batch_norm(input, running_mean, running_var, weight=None, bias=None,
+    training=False, momentum=0.1, eps=1e-05):
+
+    input_norm = (input - running_mean) / ivy.sqrt(running_var + eps)
+
+    if weight is not None:
+        input_norm =  weight * input_norm
+    if bias is not None:
+        input_norm += bias
+    
+    return input_norm
